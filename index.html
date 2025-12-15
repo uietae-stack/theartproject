@@ -107,29 +107,81 @@
         .btn-primary { background: #0ea5e9; font-weight: bold; }
         .btn-primary:hover { background: #0284c7; }
 
-        /* PPT 다운로드 버튼 */
-        .download-btn {
+        /* 버튼 컨테이너 */
+        .btn-group {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background-color: #22c55e;
-            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        /* 공통 버튼 스타일 */
+        .action-btn {
             padding: 12px 24px;
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 100;
             display: flex;
             align-items: center;
             gap: 8px;
             transition: transform 0.2s;
+            border: none;
+            font-family: 'Noto Sans KR', sans-serif;
         }
-        .download-btn:hover { transform: scale(1.05); }
+        .action-btn:hover { transform: scale(1.05); }
+
+        /* PPT 버튼 */
+        .ppt-btn {
+            background-color: #d97706; /* Amber 600 */
+            color: white;
+        }
+
+        /* PDF 버튼 */
+        .pdf-btn {
+            background-color: #dc2626; /* Red 600 */
+            color: white;
+        }
 
         .table-custom { width: 100%; text-align: left; border-collapse: collapse; }
         .table-custom th, .table-custom td { padding: 0.8rem; border-bottom: 1px solid #334155; }
         .table-custom th { color: #94a3b8; font-weight: bold; }
+
+        /* --- 인쇄(PDF 저장) 전용 스타일 --- */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+            body {
+                overflow: visible !important;
+                background-color: #0f172a !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #slide-container {
+                height: auto !important;
+                position: relative !important;
+            }
+            .slide {
+                display: flex !important; /* 모든 슬라이드 표시 */
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                width: 100% !important;
+                height: 100vh !important; /* 한 페이지에 꽉 차게 */
+                page-break-after: always !important; /* 페이지 나눔 강제 */
+                opacity: 1 !important;
+                background-color: #0f172a !important;
+            }
+            /* 네비게이션 및 버튼 숨김 */
+            .nav-controls, .btn-group {
+                display: none !important;
+            }
+        }
 
     </style>
 </head>
@@ -443,10 +495,17 @@
         <button class="btn btn-primary" onclick="nextSlide()">다음 <i class="fas fa-arrow-right"></i></button>
     </div>
 
-    <!-- PPTX 다운로드 버튼 -->
-    <button class="download-btn" onclick="generatePPT()">
-        <i class="fas fa-file-powerpoint"></i> PPTX 다운로드
-    </button>
+    <!-- 우측 하단 버튼 그룹 -->
+    <div class="btn-group">
+        <!-- PDF 버튼 (브라우저 인쇄 기능 사용) -->
+        <button class="action-btn pdf-btn" onclick="window.print()">
+            <i class="fas fa-file-pdf text-xl"></i> PDF 다운로드
+        </button>
+        <!-- PPTX 버튼 (라이브러리 사용) -->
+        <button class="action-btn ppt-btn" onclick="generatePPT()">
+            <i class="fas fa-file-powerpoint text-xl"></i> PPTX 다운로드
+        </button>
+    </div>
 
     <script>
         // 전역 변수
