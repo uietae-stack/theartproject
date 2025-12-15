@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ark Project: 2028 전략 보고서</title>
+    
+    <!-- 필수 라이브러리 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: white;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* 슬라이드 컨테이너 */
+        #slide-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* 개별 슬라이드 스타일 */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none; /* 기본 숨김 */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 4rem;
+            box-sizing: border-box;
+            background-color: #0f172a;
+        }
+
+        .slide.active {
+            display: flex; /* 활성화 시 보임 */
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 카드 디자인 */
+        .card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 강조 박스 */
+        .highlight {
+            background: rgba(56, 189, 248, 0.1);
+            border-left: 4px solid #38bdf8;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        /* 하단 네비게이션 */
+        .nav-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid #334155;
+        }
+
+        .btn {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn:hover { background: #475569; }
+        .btn-primary { background: #0ea5e9; font-weight: bold; }
+        .btn-primary:hover { background: #0284c7; }
+
+        /* PPT 다운로드 버튼 */
+        .download-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #22c55e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        .download-btn:hover { transform: scale(1.05); }
+
+        .table-custom { width: 100%; text-align: left; border-collapse: collapse; }
+        .table-custom th, .table-custom td { padding: 0.8rem; border-bottom: 1px solid #334155; }
+        .table-custom th { color: #94a3b8; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+    <!-- 슬라이드 컨테이너 -->
+    <div id="slide-container">
+
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="text-center space-y-6 max-w-4xl">
+                <i class="fas fa-shield-halved text-6xl text-sky-400 mb-4"></i>
+                <h1 class="text-6xl font-black text-white">THE ARK PROJECT</h1>
+                <h2 class="text-3xl font-light text-slate-400">2025-2028 가정 경제 생존 전략</h2>
+                <div class="grid grid-cols-3 gap-8 mt-12 text-left">
+                    <div class="p-4 border-t-2 border-sky-500">
+                        <h3 class="text-sky-400 font-bold mb-2">PROJECT GOAL</h3>
+                        <p class="text-sm text-slate-300">부채의 노예 탈출<br>자산 주권 회복</p>
+                    </div>
+                    <div class="p-4 border-t-2 border-red-500">
+                        <h3 class="text-red-400 font-bold mb-2">CURRENT STATUS</h3>
+                        <p class="text-sm text-slate-300">부채비율 242% (위험)<br>월 현금흐름 적자</p>
+                    </div>
+                    <div class="p-4 border-t-2 border-green-500">
+                        <h3 class="text-green-400 font-bold mb-2">TARGET 2028</h3>
+                        <p class="text-sm text-slate-300">부채 Zero 달성<br>학군지 안정적 진입</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Context -->
+        <div class="slide">
+            <h2 class="text-4xl font-bold mb-10"><span class="text-sky-400">01.</span> 시대적 상황과 대응</h2>
+            <div class="grid grid-cols-2 gap-12 w-full max-w-6xl">
+                <div class="card">
+                    <h3 class="text-2xl font-bold mb-4 text-white"><i class="fas fa-globe text-slate-400 mr-2"></i> 통제 사회의 위협</h3>
+                    <ul class="space-y-4 text-slate-300">
+                        <li>• <b>고금리 장기화:</b> 빚진 자들의 자산을 헐값에 강탈 (Great Reset)</li>
+                        <li>• <b>부채의 덫:</b> 빚이 있는 한 시스템에 저항할 수 없음</li>
+                        <li>• <b>결론:</b> 우리는 현재 시스템의 '노예' 상태</li>
+                    </ul>
+                </div>
+                <div class="flex flex-col justify-center space-y-6">
+                    <div class="bg-slate-800 p-8 rounded-lg border-l-4 border-sky-500">
+                        <p class="text-xl italic text-white mb-4">"부자는 가난한 자를 주관하고,<br>빚진 자는 빌려 준 자의 종이 되느니라."</p>
+                        <p class="text-right text-slate-400 font-bold">- 잠언 22:7 (KJV) -</p>
+                    </div>
+                    <div class="highlight">
+                        <p class="font-bold">파수꾼의 제언:</p>
+                        <p class="text-sm text-slate-300">집을 파는 것은 후퇴가 아닙니다.<br>가정의 주권을 회복하는 영적 결단입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Financial Status -->
+        <div class="slide">
+            <h2 class="text-4xl font-bold mb-8"><span class="text-sky-400">02.</span> 재무 상태표 (2025.12)</h2>
+            <div class="grid grid-cols-2 gap-10 w-full max-w-6xl items-center">
+                <div class="card w-full">
+                    <table class="table-custom">
+                        <tr class="border-b border-slate-600"><th class="text-sky-400">자산 (Assets)</th><th class="text-right">9.9억 원</th></tr>
+                        <tr><td>화성 아파트 (추정)</td><td class="text-right text-slate-300">7.4억</td></tr>
+                        <tr><td>임차 보증금</td><td class="text-right text-slate-300">0.5억</td></tr>
+                        <tr><td>국내 주식 (손실중)</td><td class="text-right text-yellow-400">0.16억</td></tr>
+                        
+                        <tr class="border-b border-slate-600"><th class="text-red-400 pt-6">부채 (Liabilities)</th><th class="text-right pt-6">7.01억 원</th></tr>
+                        <tr><td>K-뱅크 주담대</td><td class="text-right text-slate-300">4.6억</td></tr>
+                        <tr><td>신용대출 및 기타</td><td class="text-right text-slate-300">2.4억</td></tr>
+                    </table>
+                </div>
+                <div class="flex flex-col items-center w-full">
+                    <div style="height: 300px; width: 300px;">
+                        <canvas id="debtChart"></canvas>
+                    </div>
+                    <div class="warning mt-6 text-center">
+                        <h4 class="text-red-400 font-bold text-xl">⚠ 부채비율 242%</h4>
+                        <p class="text-sm text-slate-300">내 돈 2.9억을 지키기 위해<br>7억의 빚을 지고 있는 초고위험 상태</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Cash Flow -->
+        <div class="slide">
+            <h2 class="text-4xl font-bold mb-8"><span class="text-sky-400">03.</span> 현금흐름: 밑 빠진 독</h2>
+            <div class="grid grid-cols-2 gap-12 w-full max-w-6xl items-center">
+                <div class="card space-y-6">
+                    <h3 class="text-xl font-bold text-white mb-4">아파트 보유 시 월 손익</h3>
+                    
+                    <div>
+                        <div class="flex justify-between mb-2"><span class="text-green-400">월세 수입</span><span class="font-bold">+170만 원</span></div>
+                        <div class="w-full bg-slate-700 h-2 rounded"><div class="bg-green-500 h-2 w-[70%]"></div></div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-2"><span class="text-red-400">이자/원금 지출</span><span class="font-bold">-232만 원</span></div>
+                        <div class="w-full bg-slate-700 h-2 rounded"><div class="bg-red-500 h-2 w-full"></div></div>
+                    </div>
+
+                    <div class="bg-red-900/30 border border-red-500 p-4 rounded text-center mt-4">
+                        <p class="text-slate-300 text-sm">매달 확정 손실 (적자)</p>
+                        <p class="text-3xl font-black text-red-500">-627,000 원</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-white">"왜 돈이 안 모일까?"</h3>
+                    <p class="text-lg text-slate-300 leading-relaxed">
+                        과소비가 아닙니다. <b>구조적인 적자</b> 때문입니다.<br><br>
+                        매달 월급에서 63만원을 꺼내 은행에 바치는 구조를 깨지 않으면 우리 가정의 미래는 없습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Fact Check 1 -->
+        <div class="slide">
+            <div class="bg-slate-700 text-white p-4 rounded-lg mb-8 max-w-3xl text-center">
+                <i class="fas fa-comment-dots text-sky-400 mr-2"></i> "인동선 뚫릴 때까지 버티면, 집값 올라서 손해 메꾸지 않을까?"
+            </div>
+            <h2 class="text-3xl font-bold mb-8"><span class="text-red-400">팩트체크 1.</span> 호재의 함정</h2>
+            
+            <div class="grid grid-cols-2 gap-10 w-full max-w-6xl">
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4">버티기 비용 (3년)</h3>
+                    <div class="flex justify-between border-b border-slate-600 pb-2 mb-2">
+                        <span>월 지출</span><span class="text-red-400">232만 원</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-600 pb-2 mb-4">
+                        <span>3년 총 지출</span><span class="text-red-400 font-bold text-xl">약 8,400만 원</span>
+                    </div>
+                    <div class="text-center bg-red-900/50 p-2 rounded text-white font-bold">
+                        집값이 최소 1억 올라야 본전입니다.
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="card bg-slate-800/50">
+                        <h4 class="font-bold text-sky-400 mb-2">삼성전자의 위기</h4>
+                        <p class="text-sm text-slate-300">지역 배후 수요인 삼성의 부진은 집값 상승을 제한합니다.</p>
+                    </div>
+                    <div class="card bg-slate-800/50">
+                        <h4 class="font-bold text-sky-400 mb-2">선반영의 법칙</h4>
+                        <p class="text-sm text-slate-300">확실한 8,400만원 빚을 지고 불확실한 상승에 베팅하는 건 투자가 아닌 도박입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Fact Check 2 -->
+        <div class="slide">
+            <div class="bg-slate-700 text-white p-4 rounded-lg mb-8 max-w-3xl text-center">
+                <i class="fas fa-comment-dots text-sky-400 mr-2"></i> "그래도 부동산은 우상향하잖아. 영끌한 건데 지금 팔면 아깝지 않아?"
+            </div>
+            <h2 class="text-3xl font-bold mb-8"><span class="text-red-400">팩트체크 2.</span> 게임의 규칙 변화</h2>
+            
+            <div class="grid grid-cols-2 gap-12 w-full max-w-6xl items-center">
+                <div class="card h-64 flex items-center justify-center">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold text-white mb-2">패러다임 시프트</h3>
+                        <p class="text-slate-400">저금리 시대는 끝났습니다</p>
+                        <div class="mt-4 w-full h-1 bg-gradient-to-r from-blue-500 to-red-500"></div>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-bold text-sky-400 text-xl">과거 (2014~2021)</h3>
+                        <p class="text-slate-300">저금리 + 유동성 + 인구증가 = <b>영끌 승리</b></p>
+                    </div>
+                    <div class="border-t border-slate-600 pt-4">
+                        <h3 class="font-bold text-red-400 text-xl">현재 (2025~)</h3>
+                        <p class="text-slate-300">고금리 + 인구절벽 + 양극화 = <b>영끌 자살골</b></p>
+                    </div>
+                    <div class="highlight">
+                        <p class="font-bold text-white">"지금은 덩치를 키울 때가 아니라,<br>부채를 빼고 가볍게 움직여야 사는 생존의 시대입니다."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Solution (Structural) -->
+        <div class="slide">
+            <h2 class="text-3xl font-bold mb-6"><span class="text-sky-400">04.</span> 솔루션: 전시(Wartime) 구조조정</h2>
+            <div class="grid grid-cols-2 gap-8 w-full max-w-6xl">
+                <div class="card">
+                    <h3 class="font-bold text-white mb-4 border-b border-slate-600 pb-2">자산 현금화 & 상환 플랜</h3>
+                    <div class="space-y-3 text-sm text-slate-300">
+                        <div class="flex justify-between"><span class="text-sky-400">1. 화성 아파트 매도</span><span>+7.4억</span></div>
+                        <div class="flex justify-between"><span class="text-yellow-400">2. 주식 전량 손절</span><span>+0.16억</span></div>
+                        <div class="flex justify-between border-t border-slate-600 pt-2"><span class="text-red-400">3. 부채 전액 상환</span><span>-7.01억</span></div>
+                        <div class="flex justify-between mt-4 bg-slate-800 p-3 rounded items-center">
+                            <span class="font-bold text-white text-lg">최종 확보 현금</span>
+                            <span class="font-bold text-green-400 text-2xl">약 5,000만 원</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold text-white mb-4">Before & After</h3>
+                    <table class="table-custom text-sm text-slate-300">
+                        <tr class="border-b border-slate-600"><th>구분</th><th class="text-red-400">현재</th><th class="text-sky-400">미래</th></tr>
+                        <tr><td>총 부채</td><td class="text-red-400">7.01억</td><td class="text-sky-400 font-bold">0원 (Zero)</td></tr>
+                        <tr><td>월 이자</td><td class="text-red-400">-232만</td><td class="text-sky-400 font-bold">0원</td></tr>
+                        <tr><td>월 현금흐름</td><td class="text-red-400">-63만 (적자)</td><td class="text-sky-400 font-bold">+63만 (흑자)</td></tr>
+                    </table>
+                    <div class="highlight mt-4 text-sm">
+                        주식 손절은 수업료입니다.<br>빚 없이 <b>5천만 원 현금</b>을 쥐는 것이 승리의 열쇠입니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: New Simulation (Added) -->
+        <div class="slide">
+            <h2 class="text-3xl font-bold mb-6"><span class="text-sky-400">05.</span> 2026년 희망의 현금흐름 (Simulation)</h2>
+            <div class="grid grid-cols-2 gap-12 w-full max-w-6xl items-center">
+                <div class="card w-full">
+                    <h3 class="font-bold text-white mb-4 border-b border-slate-600 pb-2">월 예산 계획 (부채 0원 기준)</h3>
+                    <table class="table-custom text-sm text-slate-300">
+                        <tr class="bg-slate-800"><th class="text-green-400">수입 합계 (급여+수당 등)</th><th class="text-right text-green-400">+ 8,660,000</th></tr>
+                        <tr><td>(-) 십일조/헌금</td><td class="text-right">- 840,000</td></tr>
+                        <tr><td>(-) 주거/관리비/유류비</td><td class="text-right">- 2,450,000</td></tr>
+                        <tr><td>(-) 생활비 (식비/용돈/의료)</td><td class="text-right">- 2,400,000</td></tr>
+                        <tr><td>(-) 자녀 학원비</td><td class="text-right">- 700,000</td></tr>
+                        <tr class="border-t-2 border-red-500 bg-red-900/20"><th class="text-red-400">지출 합계</th><th class="text-right text-red-400 font-bold">- 6,390,000</th></tr>
+                    </table>
+                </div>
+                
+                <div class="flex flex-col gap-6 w-full">
+                    <div class="card bg-slate-800 border-2 border-green-500 text-center py-8">
+                        <p class="text-slate-400 text-lg mb-2">매월 순수 저축 가능액</p>
+                        <p class="text-5xl font-black text-green-400 mb-2">￦ 2,270,000</p>
+                        <p class="text-sm text-green-600 font-bold">(연간 약 2,700만 원 적립)</p>
+                    </div>
+                    <div class="highlight">
+                        <p class="font-bold text-white mb-2">파수꾼의 해석:</p>
+                        <p class="text-sm text-slate-300">
+                            지금은 이자 갚느라 마이너스지만, 빚을 청산하면 <b>매월 227만 원</b>이라는 강력한 현금 흐름이 생깁니다.<br>
+                            이 돈이 2028년 상급지 이동을 위한 <b>진짜 자산</b>이 됩니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Roadmap -->
+        <div class="slide">
+            <h2 class="text-3xl font-bold mb-10"><span class="text-sky-400">06.</span> 2028 약속의 땅 로드맵</h2>
+            <div class="flex w-full max-w-6xl gap-6">
+                <!-- 2026 -->
+                <div class="card w-1/3 border-t-4 border-sky-500 hover:scale-105 transition">
+                    <div class="text-sky-400 font-bold text-2xl mb-4">2026: 탈출</div>
+                    <ul class="text-sm text-slate-300 space-y-3">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>부채 Zero 달성</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>무주택 포지션 전환</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i><b>시드머니 5천 확보</b></li>
+                    </ul>
+                </div>
+                <!-- 2027 -->
+                <div class="card w-1/3 border-t-4 border-slate-500 hover:scale-105 transition">
+                    <div class="text-white font-bold text-2xl mb-4">2027: 축적</div>
+                    <ul class="text-sm text-slate-300 space-y-3">
+                        <li><i class="fas fa-briefcase text-slate-400 mr-2"></i>진주 발령 & 주말부부</li>
+                        <li><i class="fas fa-piggy-bank text-slate-400 mr-2"></i><b>월 227만원 저축</b></li>
+                        <li><i class="fas fa-chart-line text-slate-400 mr-2"></i>자산(코인/금) 투자</li>
+                    </ul>
+                </div>
+                <!-- 2028 -->
+                <div class="card w-1/3 border-t-4 border-yellow-500 hover:scale-105 transition">
+                    <div class="text-yellow-400 font-bold text-2xl mb-4">2028: 정착</div>
+                    <ul class="text-sm text-slate-300 space-y-3">
+                        <li><i class="fas fa-map-marker-alt text-yellow-500 mr-2"></i><b>평촌/의왕 진입</b></li>
+                        <li><i class="fas fa-school text-yellow-500 mr-2"></i>자녀 학군지 안착</li>
+                        <li><i class="fas fa-home text-yellow-500 mr-2"></i>부채 없는 가정의 평안</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Covenant -->
+        <div class="slide">
+            <h2 class="text-4xl font-bold mb-12">우리의 다짐 (Family Covenant)</h2>
+            <div class="grid grid-cols-2 gap-10 w-full max-w-5xl">
+                <div class="card border-t-4 border-green-500">
+                    <h3 class="text-xl font-bold text-white mb-4"><i class="fas fa-seedling text-green-400 mr-2"></i> 자녀 교육 원칙</h3>
+                    <ul class="space-y-3 text-slate-300">
+                        <li>• AI 시대의 통찰력과 영성 함양</li>
+                        <li>• 금융 문해력 최우선 교육</li>
+                        <li>• 가족 밴드를 통한 정서적 유대</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-sky-500">
+                    <h3 class="text-xl font-bold text-white mb-4"><i class="fas fa-praying-hands text-sky-400 mr-2"></i> 가장의 약속</h3>
+                    <ul class="space-y-3 text-slate-300">
+                        <li>• 다시는 빚에 의존하지 않음</li>
+                        <li>• 매주 금요일 가정 예배 준수</li>
+                        <li>• 아내와 투명한 재정 공유</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-2xl text-slate-400 font-serif italic mt-16">
+                "오직 나와 내 집은 여호와를 섬기겠노라" (수 24:15)
+            </p>
+        </div>
+
+    </div>
+
+    <!-- 네비게이션 컨트롤 -->
+    <div class="nav-controls">
+        <button class="btn" onclick="prevSlide()"><i class="fas fa-arrow-left"></i> 이전</button>
+        <span id="page-num" class="text-white flex items-center">1 / 10</span>
+        <button class="btn btn-primary" onclick="nextSlide()">다음 <i class="fas fa-arrow-right"></i></button>
+    </div>
+
+    <!-- PPTX 다운로드 버튼 -->
+    <button class="download-btn" onclick="generatePPT()">
+        <i class="fas fa-file-powerpoint"></i> PPTX 다운로드
+    </button>
+
+    <script>
+        // 전역 변수
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const pageNum = document.getElementById('page-num');
+
+        // 슬라이드 표시 함수
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            pageNum.innerText = `${index + 1} / ${slides.length}`;
+            currentSlide = index;
+        }
+
+        // 이전/다음 함수
+        function prevSlide() {
+            if (currentSlide > 0) showSlide(currentSlide - 1);
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) showSlide(currentSlide + 1);
+        }
+
+        // 키보드 이벤트
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // 차트 초기화 (3번 슬라이드)
+        const ctx = document.getElementById('debtChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['순자산 (내 돈)', '부채 (남의 돈)'],
+                datasets: [{
+                    data: [29, 71],
+                    backgroundColor: ['#38bdf8', '#ef4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: 'white' } }
+                }
+            }
+        });
+
+        // PPT 생성 함수 (PptxGenJS 사용)
+        function generatePPT() {
+            const pptx = new PptxGenJS();
+            
+            // 슬라이드 마스터 설정
+            pptx.defineSlideMaster({
+                title: 'MASTER_SLIDE',
+                background: { color: '0F172A' },
+            });
+
+            // Slide 1
+            let slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("THE ARK PROJECT", { x: 1, y: 2, w: '80%', fontSize: 44, color: 'FFFFFF', bold: true, align: 'center' });
+            slide.addText("2025-2028 가정 경제 생존 전략", { x: 1, y: 3, w: '80%', fontSize: 24, color: '94A3B8', align: 'center' });
+
+            // Slide 2
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("01. 시대적 상황과 대응", { x: 0.5, y: 0.5, fontSize: 24, color: '38BDF8', bold: true });
+            slide.addText("통제 사회의 위협: 고금리 장기화, 부채의 노예화", { x: 0.5, y: 1.5, w: '90%', fontSize: 18, color: 'FFFFFF' });
+            slide.addText("잠언 22:7 - '빚진 자는 빌려 준 자의 종이 되느니라'", { x: 0.5, y: 3, w: '90%', fontSize: 20, color: 'E2E8F0', italic: true, align: 'center' });
+
+            // Slide 3
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("02. 재무 상태표 (2025.12)", { x: 0.5, y: 0.5, fontSize: 24, color: '38BDF8', bold: true });
+            slide.addText("자산: 9.9억 (화성 아파트 7.4억 등)", { x: 0.5, y: 1.5, fontSize: 16, color: 'FFFFFF' });
+            slide.addText("부채: 7.01억 (주담대 4.6억 등)", { x: 0.5, y: 2.0, fontSize: 16, color: 'EF4444', bold: true });
+            slide.addText("부채비율 242% - 초고위험 상태", { x: 0.5, y: 3.5, w: '90%', fontSize: 24, color: 'EF4444', align: 'center', bold: true });
+
+            // Slide 4
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("03. 현금흐름 분석", { x: 0.5, y: 0.5, fontSize: 24, color: '38BDF8', bold: true });
+            slide.addText("월세 수입: +170만 원", { x: 0.5, y: 1.5, fontSize: 18, color: '22C55E' });
+            slide.addText("대출 지출: -232만 원", { x: 0.5, y: 2.0, fontSize: 18, color: 'EF4444' });
+            slide.addText("매월 확정 손실: -63만 원", { x: 0.5, y: 3.0, w: '90%', fontSize: 30, color: 'EF4444', align: 'center', bold: true });
+
+            // Slide 5
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("팩트체크 1. 호재(인동선)의 함정", { x: 0.5, y: 0.5, fontSize: 24, color: 'EF4444', bold: true });
+            slide.addText("3년 버티기 비용(이자) = 약 8,400만 원", { x: 0.5, y: 1.5, fontSize: 18, color: 'FFFFFF' });
+            slide.addText("집값이 1억 이상 올라야 본전입니다.", { x: 0.5, y: 2.5, w: '90%', fontSize: 20, color: 'E2E8F0', align: 'center' });
+
+            // Slide 6
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("팩트체크 2. 게임의 규칙 변화", { x: 0.5, y: 0.5, fontSize: 24, color: 'EF4444', bold: true });
+            slide.addText("과거: 저금리 + 유동성 = 영끌 승리", { x: 0.5, y: 1.5, fontSize: 18, color: '94A3B8' });
+            slide.addText("현재: 고금리 + 인구절벽 = 영끌 자살골", { x: 0.5, y: 2.5, fontSize: 20, color: 'EF4444', bold: true });
+
+            // Slide 7
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("04. 솔루션: 전시 구조조정", { x: 0.5, y: 0.5, fontSize: 24, color: '38BDF8', bold: true });
+            slide.addText("1. 아파트 매도 (+7.4억)", { x: 0.5, y: 1.5, fontSize: 16, color: 'FFFFFF' });
+            slide.addText("2. 주식 손절 (+0.16억)", { x: 0.5, y: 2.0, fontSize: 16, color: 'FFFFFF' });
+            slide.addText("3. 부채 전액 상환 (-7.01억)", { x: 0.5, y: 2.5, fontSize: 16, color: 'EF4444' });
+            slide.addText("결과: 부채 0원, 현금 5,000만 원 확보", { x: 0.5, y: 4.0, w: '90%', fontSize: 24, color: '22C55E', align: 'center', bold: true });
+
+            // Slide 8 (New Simulation)
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("05. 2026년 희망의 현금흐름 (Simulation)", { x: 0.5, y: 0.5, fontSize: 24, color: '38BDF8', bold: true });
+            slide.addText("수입 합계: +866만 원", { x: 0.5, y: 1.5, fontSize: 18, color: '22C55E' });
+            slide.addText("지출 합계: -639만 원", { x: 0.5, y: 2.0, fontSize: 18, color: 'EF4444' });
+            slide.addText("매월 순수 저축: +227만 원 (연 2,700만)", { x: 0.5, y: 3.5, w: '90%', fontSize: 28, color: '22C55E', align: 'center', bold: true });
+
+            // Slide 9
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("06. 2028 로드맵", { x: 0.5, y: 0.5, fontSize: 24, color: '38BDF8', bold: true });
+            slide.addText("2026: 탈출 (부채 제로)", { x: 0.5, y: 1.5, fontSize: 18, color: 'FFFFFF' });
+            slide.addText("2027: 축적 (진주 발령, 월 227만원 저축)", { x: 0.5, y: 2.5, fontSize: 18, color: 'FFFFFF' });
+            slide.addText("2028: 정착 (평촌/의왕 학군지 진입)", { x: 0.5, y: 3.5, fontSize: 18, color: 'FACC15', bold: true });
+
+            // Slide 10
+            slide = pptx.addSlide({ masterName: 'MASTER_SLIDE' });
+            slide.addText("우리의 다짐", { x: 0.5, y: 0.5, fontSize: 24, color: 'FFFFFF', bold: true });
+            slide.addText("자녀 교육: 금융 문해력, 영성 함양", { x: 0.5, y: 1.5, fontSize: 18, color: 'E2E8F0' });
+            slide.addText("가장 약속: 빚지지 않기, 가정 예배", { x: 0.5, y: 2.5, fontSize: 18, color: 'E2E8F0' });
+            slide.addText("'오직 나와 내 집은 여호와를 섬기겠노라'", { x: 0.5, y: 4.5, w: '90%', fontSize: 20, color: '94A3B8', italic: true, align: 'center' });
+
+            // 저장
+            pptx.writeFile({ fileName: "Ark_Project_Strategy.pptx" });
+        }
+    </script>
+</body>
+</html>
